@@ -1,0 +1,71 @@
+label, input, span {
+  float: left;
+  width: 70%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 1.3em;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.5;
+  text-align: left; }
+
+label {
+  padding-left: 1.5em; }
+
+input, span {
+  text-align: left;
+  padding-left: 1em;
+  width: 30%; }
+
+.section {
+  margin-bottom: 3em; }
+
+.subsection {
+  margin-bottom: 2em; }
+
+h1 {
+  font-size: 2em; }
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black; }
+
+h1, h2 {
+  font-family: 'Roboto Slab', serif; }
+
+h2 {
+  margin-bottom: 0.4em;
+  margin-top: 1em; }
+
+input:focus {
+  color: #039be5;
+  border-bottom: 1px solid #039be5;
+  box-shadow: 0 1px 0 0 #039be5;
+  outline: 0;
+  outline-offset: 0;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s; }
+
+.data-section span:after {
+  content: " GB"; }
+
+.cost-section span:before {
+  content: "$ "; }
+
+*::selection {
+  color: white;
+  background: #039be5; }
+
+.container {
+  width: 750px;
+  margin-left: auto;
+  margin-right: auto; }
+
+br {
+  clear: both; }
+
+/*# sourceMappingURL=cal.css.map */

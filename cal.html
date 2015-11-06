@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="cal-compiled.js"></script>
+    <link rel="stylesheet" href="cal.css"/>
+    <link href='https//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https//fonts.googleapis.com/css?family=Roboto+Slab400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="container">
+    <h1>
+        AWS Transcoding Calculator
+    </h1>
+
+    <div class="section parameter-section">
+        <h2>Parameters</h2>
+
+        <div class="subsection">
+            <label>Users</label><input type="number" id="p_user" value="2000"/><br/>
+
+            <label>Average monthly moments per user</label><input type="number" id="p_new_moment" value="2"/><br/>
+
+            <label>Average minutes of video per moment</label><input type="number" id="p_avg_length" value="5"/><br/>
+        </div>
+        <div class="subsection">
+            <label>Audiences</label><input type="number" id="p_audience" value="10000"/><br/>
+
+            <label>Average monthly sessions per audience</label><input type="number" id="p_session" value="5"/><br/>
+
+            <label>Average minutes of video-viewing per session</label><input type="number" id="p_session_length"
+                                                                              value="2"/><br/>
+        </div>
+        <div class="subsection">
+            <label>Bitrate (Mbps) </label><input type="number" id="p_mbps" value="8"/><br/>
+        </div>
+    </div>
+
+    <div class="section data-section">
+        <h2>Data Size</h2>
+        <label>Data uploaded </label><span id="v_up"></span><br/>
+        <label>Data uploaded (cumulative) </label><span id="v_up_c"></span><br/>
+        <label>Data downloaded </label><span id="v_down"></span><br/>
+    </div>
+
+
+    <div class="section cost-section">
+
+        <h2>Cost</h2>
+
+        <div class="subsection">
+            <label>S3 cost </label><span id="v_s3"></span><br/>
+            <label>Elastic Transcoder cost </label><span id="v_transcoder"></span><br/>
+            <label>CloudFront (CDN) cost </label><span id="v_cdn"></span><br/>
+        </div>
+        <div class="subsection">
+            <label>Total cost </label><span id="v_total"></span><br/>
+        </div>
+    </div>
+</div>
+<script>
+    var awsModel = new AwsModel(),
+            awsView = new AwsView(awsModel);
+    awsView.update();
+
+</script>
+</body>
+</html>
