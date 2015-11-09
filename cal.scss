@@ -1,26 +1,191 @@
 $primary-color: #039be5;
-label, input, span {
-  float: left;
-  width: 70%;
+$second-color: #81d4fa;
+$teal-color: #00897b;
+$red-color: #ef5350;
+$grey-color: #eceff1;
+
+$container-width: 750px;
+
+* {
+  transition: all .3s;
+  font-family: 'Roboto', sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 1.3em;
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.5;
-  text-align: left;
 }
+
+label,
+input[type="number"],
+.section > span,
+.subsection > span {
+  float: left;
+  width: 70%;
+  height: 31px;
+  font-size: 1.3em;
+  line-height: 1.5;
+}
+
+
+
+
+input[type="button"] {
+  float: left;
+  width: 33.333%;
+  background-color: transparent;
+  font-size: 1.2em;
+  border: 1px solid black;
+  border-left-width: 0;
+  line-height: 1.2;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: $grey-color;
+  }
+  &:active {
+    background-color: $primary-color;
+  }
+  transition: unset;
+
+}
+
+
+
+
+
+.button-group :first-child {
+  border-left-width: 1px;
+}
+
+
 
 label {
-  padding-left: 1.5em;
+  $border-left-width: 0.2em;
+  padding-left: 1.5em - $border-left-width;
+  border-left: transparent solid $border-left-width;
+  margin-bottom: 2px;
+
+  display: block;
+  position: relative;
 }
 
-input, span {
-  text-align: left;
-  padding-left: 1em;
+label > span {
+  position: absolute;
+  left: 70%;
+}
+
+.data-section .related,
+.cost-section .related {
+  border-color: black;
+}
+
+.parameter-section .related {
+  border-color: $primary-color;
+
+}
+
+input[type="number"],
+.section > span,
+.subsection > span {
+  text-align: right;
+  padding: 0 0 0 1em;
   width: 30%;
 }
 
+.delta {
+  position: absolute;
+  left: $container-width + 1px;
+
+}
+
+.hide {
+  display: none;
+}
+
+
+strong {
+  font-weight:normal;
+}
+
+.related strong{
+  font-weight: 700;
+}
+
+.tooltip::after {
+  content: " *";
+}
+
+.tooltip.tooltip-link::after {
+  content: " ^";
+
+}
+.tooltip.tooltip-link:hover::after {
+  color: $primary-color;
+  content: "";
+}
+
+.tooltip-link a {
+  display: none;
+}
+.tooltip-link:hover a {
+  display: inline;
+  text-decoration: none;
+  color: $primary-color;
+  &::before {
+    content: " ";
+  }
+
+  &:visited {
+    color: $primary-color;
+  }
+  &:hover {
+    background-color: $grey-color;
+    color: $primary-color;
+  }
+}
+
+
+.tooltip::before {
+  content: attr(data-tip) ;
+
+  font-size: 10px;
+  position:absolute;
+  z-index: 999;
+  white-space:nowrap;
+  right: calc(100% + 10px);
+  top:10%;
+
+  background:#000;
+  color:#e0e0e0;
+  padding:0px 7px;
+  line-height: 24px;
+  height: 24px;
+
+  opacity: 0;
+  transition:opacity 0.4s ease-out;
+}
+
+.tooltip:hover::before {
+  opacity: 1;
+  bottom:-35px;
+}
+
+
+.delta-inc {
+  color: $red-color;
+}
+
+.delta-dec {
+  color: $teal-color;
+}
+
+label.dirty::before {
+  content: "";
+  position: absolute;
+  margin-left: -0.8em;
+  line-height: 1.8em;
+}
 
 .section {
   margin-bottom: 3em;
@@ -32,9 +197,10 @@ input, span {
 
 h1 {
   font-size: 2em;
+  font-weight: bold;
 }
 
-input {
+input[type="number"] {
   background: transparent;
   border: none;
   border-bottom: 1px solid black;
@@ -53,37 +219,35 @@ h2 {
   //text-decoration: underline;
 }
 
-input:focus {
+input[type="number"]:focus {
   //outline: $primary-color auto 5px;
   color: $primary-color;
   border-bottom: 1px solid $primary-color;
   box-shadow: 0 1px 0 0 $primary-color;
   outline: 0;
   outline-offset: 0;
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -ms-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
 }
 
-.data-section span:after {
+input[type="number"],
+span {
+  font-family: 'Roboto Mono', monospace ;
+}
+
+.unit-gb:after {
   content: " GB";
 }
-.cost-section span:before {
-  content: "$ "
+
+.unit-dollar:after {
+  content: " USD"
 }
 
-*::selection {
-  color: white;
-  background: $primary-color;
 
-}
 
 .container {
-  width: 750px;
+  width: $container-width;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
 }
 
 br {

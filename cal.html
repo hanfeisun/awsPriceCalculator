@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <script src="cal-compiled.js"></script>
+
     <link rel="stylesheet" href="cal.css"/>
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div class="container">
@@ -18,51 +19,89 @@
         <h2>Parameters</h2>
 
         <div class="subsection">
-            <label>Users</label><input type="number" id="p_user" value="2000"/><br/>
+            <label class="tooltip" data-tip="People who own Waylens cameras"><strong>Users</strong></label>
+            <input class="model" type="number" id="p_user" value="2000" min="1"/><br/>
 
-            <label>Average monthly moments per user</label><input type="number" id="p_new_moment" value="2"/><br/>
+            <label>Average monthly <strong>moments</strong> uploaded per user</label>
+            <input class="model" type="number" id="p_new_moment" value="2" min="1"/><br/>
 
-            <label>Average minutes of video per moment</label><input type="number" id="p_avg_length" value="5"/><br/>
+            <label>Average minute of <strong>video duration</strong> per moment</label><input class="model"
+                                                                                              type="number"
+                                                                                              id="p_avg_length"
+                                                                                              value="5" min="1"/><br/>
         </div>
         <div class="subsection">
-            <label>Audiences</label><input type="number" id="p_audience" value="10000"/><br/>
+            <label class="tooltip"
+                   data-tip="People who watch videos on Waylens Cloud"><strong>Audiences</strong></label><input
+                class="model" type="number" id="p_audience" value="10000" min="1"/><br/>
 
-            <label>Average monthly sessions per audience</label><input type="number" id="p_session" value="5"/><br/>
+            <label>Average monthly <strong>sessions</strong> per audience</label><input class="model" type="number"
+                                                                                        id="p_session"
+                                                                                        value="5" min="1"/><br/>
 
-            <label>Average minutes of video-viewing per session</label><input type="number" id="p_session_length"
-                                                                              value="2"/><br/>
+            <label>Average minutes of <strong>video transfer</strong> per session</label><input class="model"
+                                                                                                type="number"
+                                                                                                id="p_session_length"
+                                                                                                value="2" min="1"/><br/>
         </div>
         <div class="subsection">
-            <label>Bitrate (Mbps) </label><input type="number" id="p_mbps" value="8"/><br/>
+            <label class="tooltip" data-tip="30Mbps for 1080p 60fps video "><strong>Bitrate</strong>
+                (Mbps)</label><input class="model" type="number" id="p_mbps" value="30" min="1"/><br/>
         </div>
     </div>
 
     <div class="section data-section">
         <h2>Data Size</h2>
-        <label>Data uploaded </label><span id="v_up"></span><br/>
-        <label>Data uploaded (cumulative) </label><span id="v_up_c"></span><br/>
-        <label>Data downloaded </label><span id="v_down"></span><br/>
+        <label class="tooltip" data-tip="Users · Moments · Video duration · Bitrate">Data
+            <strong>uploaded</strong></label><span class="model unit-gb" id="v_up"></span><br/>
+        <label class="tooltip" data-tip="∑ Uploaded">Data <strong>stored</strong></label><span class="model unit-gb"
+                                                                                               id="v_up_c"></span><br/>
+        <label class="tooltip" data-tip="Audiences · Sessions · Video transfer · Bitrate">Data
+            <strong>downloaded</strong></label><span class="model unit-gb" id="v_down"></span><br/>
     </div>
 
 
     <div class="section cost-section">
-
-        <h2>Cost</h2>
+        <h2>Monthly Cost</h2>
 
         <div class="subsection">
-            <label>S3 cost </label><span id="v_s3"></span><br/>
-            <label>Elastic Transcoder cost </label><span id="v_transcoder"></span><br/>
-            <label>CloudFront (CDN) cost </label><span id="v_cdn"></span><br/>
+            <label class="tooltip tooltip-link" data-tip='Use "Infrequent Access Storage" Plan, click the link in right.'><strong>Unit S3</strong>
+                cost per GB uploaded<a href="https://aws.amazon.com/s3/pricing/" target="_blank">[Pricing]</a>
+            </label><span class="model unit-dollar" id="v_s3_unit"></span><br/>
+            <label class="tooltip tooltip-link" data-tip="0.30 · Bitrate, click the link in right"><strong>Unit Transcoder</strong>
+                cost per GB uploaded<a href="https://aws.amazon.com/elastictranscoder/pricing/" target="_blank">[Pricing]</a></label><span class="model unit-dollar" id="v_transcoder_unit"></span><br/>
+            <label class="tooltip tooltip-link" data-tip="Transfer out to Origin + Transfer out to Internet , click the link in right"><strong>Unit CloudFront</strong>
+                cost per GB downloaded<a href="https://aws.amazon.com/cloudfront/pricing/" target="_blank">[Pricing]</a></label><span class="model unit-dollar" id="v_cdn_unit"></span><br/>
         </div>
+
         <div class="subsection">
-            <label>Total cost </label><span id="v_total"></span><br/>
+            <label class="tooltip" data-tip="Stored · Unit S3"><strong>S3</strong> cost</label><span
+                class="model unit-dollar" id="v_s3"></span><br/>
+            <label class="tooltip" data-tip="Uploaded · Unit Transcoder"><strong>Transcoder</strong> cost</label><span
+                class="model unit-dollar" id="v_transcoder"></span><br/>
+            <label class="tooltip" data-tip="Depend on both Uploaded and Downloaded"><strong>CloudFront</strong>
+                cost</label><span class="model unit-dollar" id="v_cdn"></span><br/>
+        </div>
+
+
+        <div class="subsection">
+            <label>Total cost </label><span class="model unit-dollar" id="v_total"></span><br/>
         </div>
     </div>
+    <div class="button-group">
+        <input type="button" id="b_save" value="Save"/>
+        <input type="button" id="b_restore" value="Restore"/>
+        <input type="button" id="b_delta" value="Hide/Show Delta"/>
+    </div>
+
 </div>
+<script src="cal-compiled.js"></script>
 <script>
     var awsModel = new AwsModel(),
             awsView = new AwsView(awsModel);
     awsView.update();
+    awsView.initDelta();
+    awsView.compare()
 
 </script>
 </body>
