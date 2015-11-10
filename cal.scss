@@ -1,17 +1,23 @@
-$primary-color: #039be5;
+$primary-dark-color: black;
+$primary-light-color: white;
 $second-color: #81d4fa;
-$teal-color: #00897b;
-$red-color: #ef5350;
-$grey-color: #eceff1;
+
+$down-color: #42a5f5;
+$up-color: #ef5350;
+$grey-color: #e0e0e0;
+$grey-darker-color: #757575;
 
 $container-width: 750px;
 
 * {
-  transition: all .3s;
+  //transition: all .3s;
   font-family: 'Roboto', sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+body {
+
 }
 
 label,
@@ -25,40 +31,31 @@ input[type="number"],
   line-height: 1.5;
 }
 
-
-
-
-input[type="button"] {
-  float: left;
-  width: 33.333%;
-  background-color: transparent;
-  font-size: 1.2em;
-  border: 1px solid black;
-  border-left-width: 0;
-  line-height: 1.2;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-
-  &:hover {
-    background-color: $grey-color;
-  }
-  &:active {
-    background-color: $primary-color;
-  }
-  transition: unset;
-
-}
-
-
-
-
-
-.button-group :first-child {
-  border-left-width: 1px;
-}
-
-
+//input[type="button"] {
+//  float: left;
+//  width: 50%;
+//  background-color: transparent;
+//  font-size: 1.2em;
+//  border: 1px solid black;
+//  border-left-width: 0;
+//  line-height: 1.2;
+//  -webkit-box-sizing: border-box;
+//  -moz-box-sizing: border-box;
+//  box-sizing: border-box;
+//
+//  &:hover {
+//    background-color: $grey-color;
+//  }
+//  &:active {
+//    background-color: $grey-darker-color;
+//  }
+//  transition: unset;
+//
+//}
+//
+//.button-group :first-child {
+//  border-left-width: 1px;
+//}
 
 label {
   $border-left-width: 0.2em;
@@ -75,15 +72,34 @@ label > span {
   left: 70%;
 }
 
-.data-section .related,
-.cost-section .related {
+
+strong {
+  font-weight: normal;
+}
+
+
+.current {
   border-color: black;
 }
 
-.parameter-section .related {
-  border-color: $primary-color;
+.show-dep {
 
+
+  .affects {
+    border-color: black;
+  }
+
+  .affected {
+    border-color: $down-color;
+  }
+
+  .current, .affects, .affected {
+    strong {
+      font-weight: 700;
+    }
+  }
 }
+
 
 input[type="number"],
 .section > span,
@@ -96,21 +112,21 @@ input[type="number"],
 .delta {
   position: absolute;
   left: $container-width + 1px;
+}
 
+.menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 2em;
+  line-height: 1.5;
+  text-align: left;
 }
 
 .hide {
   display: none;
 }
 
-
-strong {
-  font-weight:normal;
-}
-
-.related strong{
-  font-weight: 700;
-}
 
 .tooltip::after {
   content: " *";
@@ -120,64 +136,64 @@ strong {
   content: " ^";
 
 }
+
 .tooltip.tooltip-link:hover::after {
-  color: $primary-color;
+  color: $primary-dark-color;
   content: "";
 }
 
 .tooltip-link a {
   display: none;
 }
+
 .tooltip-link:hover a {
   display: inline;
   text-decoration: none;
-  color: $primary-color;
+  color: $primary-dark-color;
   &::before {
     content: " ";
   }
 
   &:visited {
-    color: $primary-color;
+    color: $primary-dark-color;
   }
   &:hover {
     background-color: $grey-color;
-    color: $primary-color;
+    color: $primary-dark-color;
   }
 }
 
-
 .tooltip::before {
-  content: attr(data-tip) ;
+  content: attr(data-tip);
 
   font-size: 10px;
-  position:absolute;
+  position: absolute;
   z-index: 999;
-  white-space:nowrap;
+  white-space: nowrap;
   right: calc(100% + 10px);
-  top:10%;
+  top: 10%;
 
-  background:#000;
-  color:#e0e0e0;
-  padding:0px 7px;
+  background: #000;
+  color: #e0e0e0;
+  padding: 0px 7px;
   line-height: 24px;
   height: 24px;
 
   opacity: 0;
-  transition:opacity 0.4s ease-out;
+  //transition: opacity 0.4s ease-out;
 }
 
 .tooltip:hover::before {
   opacity: 1;
-  bottom:-35px;
+  bottom: -35px;
 }
 
-
 .delta-inc {
-  color: $red-color;
+  color: $up-color;
 }
 
 .delta-dec {
-  color: $teal-color;
+  color: $down-color;
 }
 
 label.dirty::before {
@@ -220,17 +236,17 @@ h2 {
 }
 
 input[type="number"]:focus {
-  //outline: $primary-color auto 5px;
-  color: $primary-color;
-  border-bottom: 1px solid $primary-color;
-  box-shadow: 0 1px 0 0 $primary-color;
+  //outline: $primary-dark-color auto 5px;
+  //color: $primary-dark-color;
+  //border-bottom: 1px solid $primary-dark-color;
+  box-shadow: 0 1px 0 0 $primary-dark-color;
   outline: 0;
   outline-offset: 0;
 }
 
 input[type="number"],
 span {
-  font-family: 'Roboto Mono', monospace ;
+  font-family: 'Roboto Mono', monospace;
 }
 
 .unit-gb:after {
@@ -241,9 +257,8 @@ span {
   content: " USD"
 }
 
-
-
 .container {
+
   width: $container-width;
   margin-left: auto;
   margin-right: auto;

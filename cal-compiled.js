@@ -148,53 +148,57 @@ var AwsView = function (awsModel) {
         for (var i = 0; i < inputSelectorArray.length; i++) {
             // Hover input box
             $id(inputSelectorArray[i]).addEventListener("mouseover", function () {
-                this.previousElementSibling.classList.add("related");
-                $id(outputSelector).previousElementSibling.classList.add("related");
+                this.previousElementSibling.classList.add("current");
+                $id(outputSelector).previousElementSibling.classList.add("affects");
             });
             $id(inputSelectorArray[i]).addEventListener("mouseout", function () {
-                this.previousElementSibling.classList.remove("related");
-                $id(outputSelector).previousElementSibling.classList.remove("related");
+                this.previousElementSibling.classList.remove("current");
+                $id(outputSelector).previousElementSibling.classList.remove("affects");
+                $id(outputSelector).previousElementSibling.classList.remove("affected");
             });
 
             // Hover label of input box
             $id(inputSelectorArray[i]).previousElementSibling.addEventListener("mouseover", function () {
-                this.classList.add("related");
-                $id(outputSelector).previousElementSibling.classList.add("related");
+                this.classList.add("current");
+                $id(outputSelector).previousElementSibling.classList.add("affects");
             });
 
             $id(inputSelectorArray[i]).previousElementSibling.addEventListener("mouseout", function () {
-                this.classList.remove("related");
-                $id(outputSelector).previousElementSibling.classList.remove("related");
+                this.classList.remove("current");
+                $id(outputSelector).previousElementSibling.classList.remove("affects");
+                $id(outputSelector).previousElementSibling.classList.remove("affected");
             });
         }
 
         // Hover output text
         $id(outputSelector).addEventListener("mouseover", function () {
-            this.previousElementSibling.classList.add("related");
+            this.previousElementSibling.classList.add("current");
             for (var i = 0; i < inputSelectorArray.length; i++) {
-                $id(inputSelectorArray[i]).previousElementSibling.classList.add("related");
+                $id(inputSelectorArray[i]).previousElementSibling.classList.add("affected");
             }
         });
 
         $id(outputSelector).addEventListener("mouseout", function () {
-            this.previousElementSibling.classList.remove("related");
+            this.previousElementSibling.classList.remove("current");
             for (var i = 0; i < inputSelectorArray.length; i++) {
-                $id(inputSelectorArray[i]).previousElementSibling.classList.remove("related");
+                $id(inputSelectorArray[i]).previousElementSibling.classList.remove("affects");
+                $id(inputSelectorArray[i]).previousElementSibling.classList.remove("affected");
             }
         });
 
         // Hover label of output text
         $id(outputSelector).previousElementSibling.addEventListener("mouseover", function () {
-            this.classList.add("related");
+            this.classList.add("current");
             for (var i = 0; i < inputSelectorArray.length; i++) {
-                $id(inputSelectorArray[i]).previousElementSibling.classList.add("related");
+                $id(inputSelectorArray[i]).previousElementSibling.classList.add("affected");
             }
         });
 
         $id(outputSelector).previousElementSibling.addEventListener("mouseout", function () {
-            this.classList.remove("related");
+            this.classList.remove("current");
             for (var i = 0; i < inputSelectorArray.length; i++) {
-                $id(inputSelectorArray[i]).previousElementSibling.classList.remove("related");
+                $id(inputSelectorArray[i]).previousElementSibling.classList.remove("affects");
+                $id(inputSelectorArray[i]).previousElementSibling.classList.remove("affected");
             }
         });
     };
@@ -210,24 +214,42 @@ var AwsView = function (awsModel) {
     self.bindList = {};
 
     self.bind3("v_up", "d_upload_GB", ["p_user", "p_new_moment", "p_avg_length", "p_mbps"]);
-    self.bind3("v_up_c", "d_upload_cumulative_GB", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_up"]);
+    self.bind3("v_store_ebs", "d_store_ebs_GB", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_up"]);
+    self.bind3("v_store_s3", "d_store_s3_GB", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_up", "v_store_ebs"]);
+
     self.bind3("v_down", "d_download_GB", ["p_audience", "p_session", "p_session_length", "p_mbps"]);
 
-    self.bind3("v_s3", "s3", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_up_c", "v_s3_unit"]);
+    self.bind3("v_s3_unit", "s3_unit", []);
+    self.bind3("v_ebs_unit", "ebs_unit", []);
+
+    self.bind3("v_s3", "s3", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_store_ebs", "v_s3_unit"]);
     self.bind3("v_transcoder", "transcoder", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_up"]);
     self.bind3("v_cdn", "cdn", ["p_audience", "p_session", "p_session_length", "p_mbps", "v_down", "v_up"]);
+    self.bind3("v_ebs", "ebs", ["p_user", "p_new_moment", "p_avg_length", "p_mbps", "v_up", "v_store_ebs", "v_ebs_unit"]);
+    self.bind3("v_web", "webservice", ["p_user"]);
 
-    self.bind3("v_s3_unit", "s3_unit", []);
+    self.bind3("v_overlay", "overlay", ["p_user", "p_new_moment", "p_avg_length"]);
+
     self.bind3("v_transcoder_unit", "transcoder_unit", ["p_mbps"]);
     self.bind3("v_cdn_unit", "cdn_unit", ["p_audience", "p_session", "p_session_length", "p_mbps", "v_down", "v_up"]);
 
-    self.bind3("v_total", "total", ["v_s3", "v_transcoder", "v_cdn"]);
+    self.bind3("v_total", "total", ["v_s3", "v_transcoder", "v_cdn", "v_web", "v_overlay", "v_ebs"]);
 
-    $id("b_delta").addEventListener("click", function () {
+    $id("c_delta").addEventListener("change", function () {
         var elements = $class("delta");
         for (var i = 0; i < elements.length; i++) {
             elements[i].classList.toggle("hide");
         }
+    });
+
+    $id("c_unit").addEventListener("change", function () {
+        var element = $id("unit-cost-subsection");
+        element.classList.toggle("hide");
+    });
+
+    $id("c_dep").addEventListener("change", function () {
+        var element = $id("form-container");
+        element.classList.toggle("show-dep");
     });
 
     $id("b_save").addEventListener("click", function () {
@@ -238,6 +260,11 @@ var AwsView = function (awsModel) {
     $id("b_restore").addEventListener("click", function () {
         self.restore();
         self.compare();
+    });
+
+    $id("menu-on").addEventListener("click", function () {
+        var element = $id("menu-content");
+        element.classList.toggle("hide");
     });
 };
 
@@ -280,8 +307,12 @@ AwsModel.prototype.d_upload_GB = function () {
     return this.data_size_GB(this.t_upload_minute());
 };
 
-AwsModel.prototype.d_upload_cumulative_GB = function () {
+AwsModel.prototype.d_store_ebs_GB = function () {
     return this.data_size_GB(this.t_acc_minute());
+};
+
+AwsModel.prototype.d_store_s3_GB = function () {
+    return this.d_store_ebs_GB() * 2;
 };
 
 AwsModel.prototype.d_download_GB = function () {
@@ -293,7 +324,7 @@ AwsModel.prototype.s3 = function () {
     // https://aws.amazon.com/s3/pricing/
     // Note: "Standard - Infrequent Access Storage" price in United States
     // Actual price is $0.125 per GB, use $0.13 to compensate Request price
-    return 0.13 * this.d_upload_cumulative_GB();
+    return 0.13 * this.d_store_s3_GB();
 };
 
 AwsModel.prototype.s3_unit = function () {
@@ -323,8 +354,23 @@ AwsModel.prototype.cdn_unit = function () {
     return this.cdn() / this.d_download_GB();
 };
 
+AwsModel.prototype.overlay = function () {
+    return Math.ceil(this.t_upload_minute() * 4 / (60 * 24 * 31)) * 59.86;
+};
+
+AwsModel.prototype.webservice = function () {
+    return Math.ceil(this.p_user / 1000 + this.p_audience / 10000) * 29.28;
+};
+
+AwsModel.prototype.ebs = function () {
+    return this.d_store_ebs_GB() * this.ebs_unit();
+};
+
+AwsModel.prototype.ebs_unit = function () {
+    return 0.10;
+};
 AwsModel.prototype.total = function () {
-    return this.s3() + this.transcoder() + this.cdn();
+    return this.s3() + this.transcoder() + this.cdn() + this.overlay() + this.ebs() + this.webservice();
 };
 
 //# sourceMappingURL=cal-compiled.js.map

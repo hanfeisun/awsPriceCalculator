@@ -10,7 +10,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
 </head>
 <body>
-<div class="container">
+<div class="container show-dep" id="form-container">
     <h1>
         AWS Transcoding Calculator
     </h1>
@@ -54,8 +54,12 @@
         <h2>Data Size</h2>
         <label class="tooltip" data-tip="Users · Moments · Video duration · Bitrate">Data
             <strong>uploaded</strong></label><span class="model unit-gb" id="v_up"></span><br/>
-        <label class="tooltip" data-tip="∑ Uploaded">Data <strong>stored</strong></label><span class="model unit-gb"
-                                                                                               id="v_up_c"></span><br/>
+        <label class="tooltip" data-tip="∑ Uploaded">Data <strong>stored EBS</strong></label><span class="model unit-gb"
+                                                                                                   id="v_store_ebs"></span><br/>
+        <label class="tooltip"
+               data-tip="Stored EBS * 2, data size will double due to transcoding to different resolution">Data <strong>stored
+            S3</strong></label><span class="model unit-gb"
+                                     id="v_store_s3"></span><br/>
         <label class="tooltip" data-tip="Audiences · Sessions · Video transfer · Bitrate">Data
             <strong>downloaded</strong></label><span class="model unit-gb" id="v_down"></span><br/>
     </div>
@@ -64,14 +68,26 @@
     <div class="section cost-section">
         <h2>Monthly Cost</h2>
 
-        <div class="subsection">
-            <label class="tooltip tooltip-link" data-tip='Use "Infrequent Access Storage" Plan, click the link in right.'><strong>Unit S3</strong>
-                cost per GB uploaded<a href="https://aws.amazon.com/s3/pricing/" target="_blank">[Pricing]</a>
+        <div class="subsection hide" id="unit-cost-subsection">
+            <label class="tooltip tooltip-link" data-tip='Use "Infrequent Access Storage" Plan, see the link in right.'><strong>Unit
+                S3</strong>
+                cost per GB stored<a href="https://aws.amazon.com/s3/pricing/" target="_blank">[Pricing]</a>
             </label><span class="model unit-dollar" id="v_s3_unit"></span><br/>
-            <label class="tooltip tooltip-link" data-tip="0.30 · Bitrate, click the link in right"><strong>Unit Transcoder</strong>
-                cost per GB uploaded<a href="https://aws.amazon.com/elastictranscoder/pricing/" target="_blank">[Pricing]</a></label><span class="model unit-dollar" id="v_transcoder_unit"></span><br/>
-            <label class="tooltip tooltip-link" data-tip="Transfer out to Origin + Transfer out to Internet , click the link in right"><strong>Unit CloudFront</strong>
-                cost per GB downloaded<a href="https://aws.amazon.com/cloudfront/pricing/" target="_blank">[Pricing]</a></label><span class="model unit-dollar" id="v_cdn_unit"></span><br/>
+            <label class="tooltip tooltip-link" data-tip="0.30 · Bitrate, click the link in right"><strong>Unit
+                Transcoder</strong>
+                cost per GB uploaded<a href="https://aws.amazon.com/elastictranscoder/pricing/" target="_blank">[Pricing]</a></label><span
+                class="model unit-dollar" id="v_transcoder_unit"></span><br/>
+            <label class="tooltip tooltip-link"
+                   data-tip="Transfer out to Origin + Transfer out to Internet , see the link in right"><strong>Unit
+                CloudFront</strong>
+                cost per GB downloaded<a href="https://aws.amazon.com/cloudfront/pricing/" target="_blank">[Pricing]</a></label><span
+                class="model unit-dollar" id="v_cdn_unit"></span><br/>
+            <label class="tooltip tooltip-link"
+                   data-tip='Use "EBS General Purpose (SSD)" , see the link in right'><strong>Unit EBS</strong>
+                cost per GB stored<a href="https://aws.amazon.com/ebs/pricing/"
+                                     target="_blank">[Pricing]</a></label><span class="model unit-dollar"
+                                                                                id="v_ebs_unit"></span><br/>
+
         </div>
 
         <div class="subsection">
@@ -81,6 +97,17 @@
                 class="model unit-dollar" id="v_transcoder"></span><br/>
             <label class="tooltip" data-tip="Depend on both Uploaded and Downloaded"><strong>CloudFront</strong>
                 cost</label><span class="model unit-dollar" id="v_cdn"></span><br/>
+            <label class="tooltip"
+                   data-tip='Use "c4.large" instance, assume an instance can render 6 hours video per day'><strong>EC2
+                Overlay</strong>
+                cost</label><span class="model unit-dollar" id="v_overlay"></span><br/>
+            <label class="tooltip"
+                   data-tip='Use "t2.medium" instance, assume an instance can service 1000 users or 10000 audiences'><strong>EC2
+                Web Service</strong>
+                cost</label><span class="model unit-dollar" id="v_web"></span><br/>
+            <label class="tooltip" data-tip='Stored EBS · Unit EBS'><strong>EBS</strong>
+                cost</label><span class="model unit-dollar" id="v_ebs"></span><br/>
+
         </div>
 
 
@@ -88,12 +115,18 @@
             <label>Total cost </label><span class="model unit-dollar" id="v_total"></span><br/>
         </div>
     </div>
-    <div class="button-group">
-        <input type="button" id="b_save" value="Save"/>
-        <input type="button" id="b_restore" value="Restore"/>
-        <input type="button" id="b_delta" value="Hide/Show Delta"/>
-    </div>
 
+
+</div>
+<div class="menu">
+    <a href="#" id="menu-on">Menu</a>
+    <div class="hide" id="menu-content">
+        <div class="checkbox">Highlight Dependency<input type="checkbox" id="c_dep" checked></div>
+        <div class="checkbox">Show Delta<input type="checkbox" id="c_delta" checked></div>
+        <div class="checkbox">Show Unit Cost<input type="checkbox" id="c_unit"></div>
+        <input type="button" id="b_save" value="Save the parameters below as baseline"/><br>
+        <input type="button" id="b_restore" value="Restore the parameters below"/>
+    </div>
 </div>
 <script src="cal-compiled.js"></script>
 <script>

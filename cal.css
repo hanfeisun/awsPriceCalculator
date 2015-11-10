@@ -1,5 +1,4 @@
 * {
-  transition: all .3s;
   font-family: 'Roboto', sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -15,26 +14,6 @@ input[type="number"],
   font-size: 1.3em;
   line-height: 1.5; }
 
-input[type="button"] {
-  float: left;
-  width: 33.333%;
-  background-color: transparent;
-  font-size: 1.2em;
-  border: 1px solid black;
-  border-left-width: 0;
-  line-height: 1.2;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  transition: unset; }
-  input[type="button"]:hover {
-    background-color: #eceff1; }
-  input[type="button"]:active {
-    background-color: #039be5; }
-
-.button-group :first-child {
-  border-left-width: 1px; }
-
 label {
   padding-left: 1.3em;
   border-left: transparent solid 0.2em;
@@ -46,12 +25,18 @@ label > span {
   position: absolute;
   left: 70%; }
 
-.data-section .related,
-.cost-section .related {
+strong {
+  font-weight: normal; }
+
+.current {
   border-color: black; }
 
-.parameter-section .related {
-  border-color: #039be5; }
+.show-dep .affects {
+  border-color: black; }
+.show-dep .affected {
+  border-color: #42a5f5; }
+.show-dep .current strong, .show-dep .affects strong, .show-dep .affected strong {
+  font-weight: 700; }
 
 input[type="number"],
 .section > span,
@@ -64,14 +49,16 @@ input[type="number"],
   position: absolute;
   left: 751px; }
 
+.menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 2em;
+  line-height: 1.5;
+  text-align: left; }
+
 .hide {
   display: none; }
-
-strong {
-  font-weight: normal; }
-
-.related strong {
-  font-weight: 700; }
 
 .tooltip::after {
   content: " *"; }
@@ -80,7 +67,7 @@ strong {
   content: " ^"; }
 
 .tooltip.tooltip-link:hover::after {
-  color: #039be5;
+  color: black;
   content: ""; }
 
 .tooltip-link a {
@@ -89,14 +76,14 @@ strong {
 .tooltip-link:hover a {
   display: inline;
   text-decoration: none;
-  color: #039be5; }
+  color: black; }
   .tooltip-link:hover a::before {
     content: " "; }
   .tooltip-link:hover a:visited {
-    color: #039be5; }
+    color: black; }
   .tooltip-link:hover a:hover {
-    background-color: #eceff1;
-    color: #039be5; }
+    background-color: #e0e0e0;
+    color: black; }
 
 .tooltip::before {
   content: attr(data-tip);
@@ -111,8 +98,7 @@ strong {
   padding: 0px 7px;
   line-height: 24px;
   height: 24px;
-  opacity: 0;
-  transition: opacity 0.4s ease-out; }
+  opacity: 0; }
 
 .tooltip:hover::before {
   opacity: 1;
@@ -122,7 +108,7 @@ strong {
   color: #ef5350; }
 
 .delta-dec {
-  color: #00897b; }
+  color: #42a5f5; }
 
 label.dirty::before {
   content: "";
@@ -153,15 +139,13 @@ h2 {
   margin-top: 1em; }
 
 input[type="number"]:focus {
-  color: #039be5;
-  border-bottom: 1px solid #039be5;
-  box-shadow: 0 1px 0 0 #039be5;
+  box-shadow: 0 1px 0 0 black;
   outline: 0;
   outline-offset: 0; }
 
 input[type="number"],
 span {
-  font-family: "Roboto Mono", monospace; }
+  font-family: 'Roboto Mono', monospace; }
 
 .unit-gb:after {
   content: " GB"; }
