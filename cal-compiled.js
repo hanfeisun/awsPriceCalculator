@@ -2,13 +2,13 @@
 
 // Utils
 ;
-var $id = function (idSelector) {
+var $id = function $id(idSelector) {
     return document.getElementById(idSelector);
 },
-    $class = function (classSelector) {
+    $class = function $class(classSelector) {
     return document.getElementsByClassName(classSelector);
 },
-    $get = function (node) {
+    $get = function $get(node) {
     if (typeof node === "string") {
         node = $id(node);
     }
@@ -18,7 +18,7 @@ var $id = function (idSelector) {
         return parseFloat(node.innerText);
     }
 },
-    $set = function (node, value) {
+    $set = function $set(node, value) {
     var result = value;
     if (typeof node === "string") {
         node = $id(node);
@@ -29,7 +29,7 @@ var $id = function (idSelector) {
         node.innerText = result;
     }
 },
-    step_minus = function (a, b) {
+    step_minus = function step_minus(a, b) {
     if (a < b) {
         return 0;
     } else {
@@ -38,7 +38,7 @@ var $id = function (idSelector) {
 };
 
 var view = {
-    subscribe: function (selector) {
+    subscribe: function subscribe(selector) {
         var self = this,
             e = $id(selector);
 
@@ -48,13 +48,13 @@ var view = {
         };
         e.onpropertychange = e.oninput;
     },
-    bind: function (selector, propFunc) {
+    bind: function bind(selector, propFunc) {
         this.bindList[selector] = propFunc;
     }
 
 };
 
-var AwsView = function (awsModel) {
+var AwsView = function AwsView(awsModel) {
     var self = this;
 
     self.save = function () {
@@ -77,7 +77,7 @@ var AwsView = function (awsModel) {
 
     self.compare = function () {
         var saved = self.model.saved;
-        var transform = function (num, fixDecimal) {
+        var transform = function transform(num, fixDecimal) {
             var result;
             result = num.toFixed(fixDecimal);
             if (num > 0) {
@@ -234,6 +234,7 @@ var AwsView = function (awsModel) {
     self.bind3("v_cdn_unit", "cdn_unit", ["p_audience", "p_session", "p_session_length", "p_mbps", "v_down", "v_up"]);
 
     self.bind3("v_total", "total", ["v_s3", "v_transcoder", "v_cdn", "v_web", "v_overlay", "v_ebs"]);
+    self.bind3("v_total_per_user", "total_per_user", ["p_user", "v_total"]);
 
     $id("c_delta").addEventListener("change", function () {
         var elements = $class("delta");
@@ -270,7 +271,7 @@ var AwsView = function (awsModel) {
 
 AwsView.prototype = view;
 
-var AwsModel = function () {
+var AwsModel = function AwsModel() {
     this.notify = this.parseAll;
     this.notify();
 };
@@ -371,6 +372,11 @@ AwsModel.prototype.ebs_unit = function () {
 };
 AwsModel.prototype.total = function () {
     return this.s3() + this.transcoder() + this.cdn() + this.overlay() + this.ebs() + this.webservice();
+};
+
+AwsModel.prototype.total_per_user = function () {
+
+    return this.total() / this.p_user;
 };
 
 //# sourceMappingURL=cal-compiled.js.map

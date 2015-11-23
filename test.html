@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+</head>
+<body>
+
+<a target="_blank" href="//baidu.com">Baidu</a>
+
+<script>
+    document.getElementsByTagName("a")[0].onclick = function(e) {
+        window.open("//bing.com");
+        return false
+    }
+</script>
+</body>
+</html>

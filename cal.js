@@ -246,6 +246,7 @@ var AwsView = function (awsModel) {
 
 
     self.bind3("v_total", "total", ["v_s3", "v_transcoder", "v_cdn", "v_web", "v_overlay", "v_ebs"]);
+    self.bind3("v_total_per_user", "total_per_user", ["p_user", "v_total"]);
 
     $id("c_delta").addEventListener("change", function () {
             var elements = $class("delta");
@@ -403,4 +404,11 @@ AwsModel.prototype.ebs_unit = function() {
 AwsModel.prototype.total = function () {
     return this.s3() + this.transcoder() + this.cdn() + this.overlay() + this.ebs() + this.webservice();
 };
+
+AwsModel.prototype.total_per_user = function () {
+
+    return this.total() / this.p_user
+};
+
+
 
