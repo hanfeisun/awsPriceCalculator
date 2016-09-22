@@ -1,4 +1,4 @@
-# awsPriceCalculator
+# AWS Price Calculator
 
 A visualized way to calculate the cost of AWS service based on customizable parameters.
 
